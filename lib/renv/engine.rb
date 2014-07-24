@@ -60,7 +60,12 @@ module Renv
     end
 
     def _directory
-      @_directory ||= _connection.directories.get(_bucket)
+      @_directory ||= _connection.directories.get(_bucket).tap do |dir|
+        if dir.nil?
+          $stderr.puts "Bucket '#{_bucket}' does not seem to exist"
+          exit 1
+        end
+      end
     end
     
     def _connection
