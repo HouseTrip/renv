@@ -1,4 +1,4 @@
-Copyright (c) 2014 Julien Letessier
+Copyright (c) 2014 HouseTrip
 
 MIT License
 

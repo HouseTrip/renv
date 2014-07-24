@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'renv'
+require 'renv/cli'
+
+Renv::CLI.start(ARGV)
