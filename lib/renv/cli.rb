@@ -39,7 +39,7 @@ module Renv
     def _engine
       Engine.new(
         app:    options[:app],
-        name:   options[:name]
+        name:   options[:name],
         bucket: options[:bucket])
     end
 

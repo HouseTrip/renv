@@ -78,7 +78,7 @@ module Renv
     end
 
     def _bucket
-      @_bucket ||= ENV.fetch("RENV_BUCKET_#{_app}")[M#2
+      @_bucket ||= ENV.fetch("RENV_BUCKET_#{_app}")
     end
 
     def _name
