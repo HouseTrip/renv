@@ -23,6 +23,7 @@ module Renv
 
     def load(payload)
       @data = @data.merge(_parse(payload))
+      self
     end
 
     private

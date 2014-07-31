@@ -37,10 +37,13 @@ module Renv
     private
 
     def _engine
+      connection = Connection.new(
+        app:        options[:app],
+        bucket:     options[:bucket]
+      )
       Engine.new(
-        app:    options[:app],
-        name:   options[:name],
-        bucket: options[:bucket])
+        name:       options[:name],
+        connection: connection)
     end
 
     def _parse_pairs(pairs)

@@ -1,13 +1,15 @@
 require 'renv'
 require 'fog'
 require 'renv/data'
+require 'renv/connection'
 
 module Renv
   class Engine
-    def initialize(app: nil, name: nil, bucket: nil)
-      @_app    = app
-      @_name   = name
-      @_bucket = bucket
+    def initialize(name: nil, connection:, data: nil)
+      @_name      = name
+      @connection = connection
+      @_data      = data || Data.new
+      @loaded     = false
     end
 
     def get(key)
@@ -38,16 +40,16 @@ module Renv
     private
 
     def _data
-      @_data ||= begin
-        s3file = _directory.files.get(_path_current)
-        payload = s3file ? s3file.body : ''
-        Data.new(payload)
-      end
+      return @_data if @loaded
+      s3file = @connection.files.get(_path_current)
+      payload = s3file ? s3file.body : ''
+      @loaded = true
+      @_data.load(payload)
     end
 
     def _save
       [_path_new, _path_current].each do |path|
-        _directory.files.create(key: path, body: _data.dump, public: false)
+        @connection.files.create(key: path, body: _data.dump, public: false)
       end
     end
 
@@ -59,34 +61,12 @@ module Renv
       @_path_new ||= "#{_name}/#{Time.now.strftime('%FT%T')}"
     end
 
-    def _directory
-      @_directory ||= _connection.directories.get(_bucket).tap do |dir|
-        if dir.nil?
-          $stderr.puts "Bucket '#{_bucket}' does not seem to exist"
-          exit 1
-        end
-      end
-    end
-    
-    def _connection
-      @_connection ||= Fog::Storage.new(
-        provider:              'AWS',
-        aws_access_key_id:     ENV.fetch("RENV_AWS_KEY_#{_app}"),
-        aws_secret_access_key: ENV.fetch("RENV_AWS_SECRET_#{_app}"),
-        region:                ENV.fetch("RENV_AWS_REGION_#{_app}", 'eu-west-1')
-      )
-    end
-
-    def _bucket
-      @_bucket ||= ENV.fetch("RENV_BUCKET_#{_app}")
-    end
-
     def _name
-      @_name ||= _app
+      @_name ||= @connection.app_name
     end
 
     def _app
-      @_app ||= ENV.fetch('RENV_APP')
+      @connection.app
     end
     
   end
