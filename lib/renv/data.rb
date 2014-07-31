@@ -5,7 +5,7 @@ module Renv
   class Data
     extend Forwardable
 
-    def initialize(payload)
+    def initialize(payload = '')
       @data = _parse(payload)
     end
 
@@ -22,7 +22,7 @@ module Renv
     end
 
     def load(payload)
-      @data = _parse(payload).merge(@data)
+      @data = @data.merge(_parse(payload))
     end
 
     private
