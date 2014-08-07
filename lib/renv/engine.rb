@@ -16,6 +16,7 @@ module Renv
       _data[key]
     end
 
+    # Sets one or more key-value pairs
     def set(hash)
       hash.each_pair do |key, value|
         _data[key] = value
@@ -23,6 +24,7 @@ module Renv
       _save
     end
 
+    # Deletes one or more keys-value pairs
     def del(keys)
       keys.each { |key| _data.delete(key) }
       _save
