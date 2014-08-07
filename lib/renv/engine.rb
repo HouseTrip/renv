@@ -59,6 +59,7 @@ module Renv
       @_path_current ||= "#{_name}/current"
     end
 
+    # "Backup" path, which is a timestamp in ISO format (2014-08-07T11:24:25)
     def _path_new
       @_path_new ||= "#{_name}/#{Time.now.strftime('%FT%T')}"
     end
