@@ -5,11 +5,11 @@ require 'renv/connection'
 
 module Renv
   class Engine
-    def initialize(name: nil, connection:, data: nil)
-      @_name      = name
-      @connection = connection
-      @_data      = data || Data.new
-      @loaded     = false
+    def initialize(connection:, name: nil, data: nil)
+      @_name       = name
+      @_connection = connection
+      @_data       = data || Data.new
+      @_loaded     = false
     end
 
     def get(key)
@@ -40,16 +40,16 @@ module Renv
     private
 
     def _data
-      return @_data if @loaded
-      s3file = @connection.files.get(_path_current)
+      return @_data if @_loaded
+      s3file = @_connection.files.get(_path_current)
       payload = s3file ? s3file.body : ''
-      @loaded = true
+      @_loaded = true
       @_data.load(payload)
     end
 
     def _save
       [_path_new, _path_current].each do |path|
-        @connection.files.create(key: path, body: _data.dump, public: false)
+        @_connection.files.create(key: path, body: _data.dump, public: false)
       end
     end
 
@@ -62,11 +62,11 @@ module Renv
     end
 
     def _name
-      @_name ||= @connection.app_name
+      @_name ||= @_connection.app_name
     end
 
     def _app
-      @connection.app
+      @_connection.app
     end
     
   end
