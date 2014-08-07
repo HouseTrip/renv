@@ -7,6 +7,8 @@ The name stands for "Remote ENVironment" (thanks, captain obvious).
 It can be used to provide a replacement to Heroku's superb `config:get` /
 `config:set` in Capistrano-land.
 
+![Version](https://badge.fury.io/rb/renv.svg)
+![Build status](https://travis-ci.org/HouseTrip/renv.svg?branch=master)
 
 ## Installation
 
