@@ -7,12 +7,6 @@ describe Renv::Engine do
   let(:name)     { 'staging' }
   let(:app_name) { 'testapp' }
   let(:data)     { Renv::Data.new }
-  # let(:env) {{
-  #   'RENV_APP'                => 'testapp',
-  #   'RENV_AWS_KEY_testapp'    => 'key',
-  #   'RENV_AWS_SECRET_testapp' => 'secret',
-  #   'RENV_BUCKET_testapp'     => 'testbucket'
-  # }}
 
   let(:connection) do
     c = Fog::Storage.new(provider: 'Local', local_root: tempdir.to_s)
