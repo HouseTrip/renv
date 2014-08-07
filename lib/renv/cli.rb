@@ -46,10 +46,12 @@ module Renv
         connection: connection)
     end
 
+    # Transforms an array of KEY=VALUE pairs into a { KEY => VALUE } hash.
+    # The key is the part at the left of the first equals sign.
     def _parse_pairs(pairs)
       Hash.new.tap do |h|
         pairs.each do |p|
-          if p !~ /^([^=]+)=(.*)$/
+          if p !~ /^([^=]+)=(.*)$/ # left/right of the first equals sign
             $stderr.puts "Not a valid key-value: '#{p}'"
             exit 1
           end
